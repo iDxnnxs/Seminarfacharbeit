@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminarfacharbeit - Currently Updating</title>
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #0f3460;
+            --highlight-color: #00ff88;
+            --text-light: #ffffff;
+            --text-muted: #cccccc;
+            --gradient-1: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            --gradient-2: linear-gradient(45deg, #00ff88, #0f3460, #16213e);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--gradient-1);
+            color: var(--text-light);
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Particle Background Animation */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--highlight-color);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        .particle:nth-child(odd) {
+            background: var(--text-muted);
+            opacity: 0.05;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: rgba(26, 26, 46, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Logo/Icon Animation */
+        .logo {
+            width: 80px;
+            height: 80px;
+            border: 3px solid var(--highlight-color);
+            border-radius: 50%;
+            margin-bottom: 2rem;
+            position: relative;
+            animation: pulse 2s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .logo::before {
+            content: '📚';
+            font-size: 2rem;
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(0, 255, 136, 0.6);
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Main Title with Typing Animation */
+        .main-title {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: var(--gradient-2);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite, fadeInUp 1s ease-out;
+            position: relative;
+        }
+
+        .typing-text {
+            border-right: 3px solid var(--highlight-color);
+            animation: blink-caret 1s step-end infinite;
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--highlight-color); }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Subtitle */
+        .subtitle {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1s forwards;
+        }
+
+        /* Description */
+        .description {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.5s forwards;
+        }
+
+        /* Loading Animation */
+        .loading-container {
+            margin: 2rem 0;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 2s forwards;
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--highlight-color);
+            animation: loadingBounce 1.4s ease-in-out infinite both;
+        }
+
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+        .dot:nth-child(3) { animation-delay: 0; }
+
+        @keyframes loadingBounce {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-2);
+            background-size: 200% 100%;
+            border-radius: 2px;
+            animation: progressFill 3s ease-in-out infinite, gradientMove 2s linear infinite;
+        }
+
+        @keyframes progressFill {
+            0%, 100% { width: 0%; }
+            50% { width: 100%; }
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+
+        /* Completion Date */
+        .completion-date {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            color: var(--highlight-color);
+            margin-top: 2rem;
+            padding: 0.8rem 1.5rem;
+            border: 1px solid var(--highlight-color);
+            border-radius: 25px;
+            background: rgba(0, 255, 136, 0.05);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 2.5s forwards, pulse 3s ease-in-out 3s infinite;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 2rem;
+            left: 43%;
+            transform: translateX(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 3s forwards;
+            z-index: 10;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .logo {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 1.5rem;
+            }
+            
+            .logo::before {
+                font-size: 1.5rem;
+            }
+            
+            .progress-bar {
+                width: 250px;
+            }
+        }
+
+        /* Glowing border effect */
+        .glow-border {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            height: 90%;
+            border: 2px solid var(--highlight-color);
+            border-radius: 20px;
+            opacity: 0.1;
+            animation: borderGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% {
+                opacity: 0.1;
+                box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            }
+            50% {
+                opacity: 0.3;
+                box-shadow: 0 0 40px rgba(0, 255, 136, 0.4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Glowing Border -->
+    <div class="glow-border"></div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <div class="logo"></div>
+        
+        <h1 class="main-title">
+            <span class="typing-text" id="typingText"></span>
+        </h1>
+        
+        <p class="subtitle">Diese Website wird bald verfügbar sein</p>
+        
+        <p class="description">
+            Hier entsteht eine Infowebsite zu unserer Seminarfacharbeit - Auswirkungen sozialer Medien auf Jugendliche. 
+            Die Inhalte werden derzeit vorbereitet und bald für Sie verfügbar sein.
+        </p>
+        
+        <div class="loading-container">
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+        
+        <div class="completion-date">
+            📅 Verfügbar ab November 2025
+        </div>
+    </div>
+    
+    <footer class="footer">
+        © 2025 Seminarfacharbeit - Auswirkungen sozialer Medien - In Bearbeitung
+    </footer>
+
+    <script>
+        // Typing Animation
+        function typeWriter() {
+            const text = "Currently Updating";
+            const element = document.getElementById('typingText');
+            let index = 0;
+            
+            function type() {
+                if (index < text.length) {
+                    element.textContent += text.charAt(index);
+                    index++;
+                    setTimeout(type, 150);
+                } else {
+                    // Keep the cursor blinking
+                    setTimeout(() => {
+                        element.textContent = '';
+                        index = 0;
+                        setTimeout(type, 2000); // Wait 2 seconds before retyping
+                    }, 3000); // Show complete text for 3 seconds
+                }
+            }
+            
+            type();
+        }
+
+        // Create Floating Particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const numberOfParticles = 50;
+            
+            for (let i = 0; i < numberOfParticles; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size
+                const size = Math.random() * 4 + 1;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Random position
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + 'vh';
+                
+                // Random animation duration
+                const duration = Math.random() * 15 + 10;
+                particle.style.animationDuration = duration + 's';
+                
+                // Random animation delay
+                const delay = Math.random() * 5;
+                particle.style.animationDelay = delay + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Add some interactive hover effects
+        function addInteractivity() {
+            const container = document.querySelector('.container');
+            
+            container.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                
+                container.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(0, 255, 136, 0.1) 0%, rgba(26, 26, 46, 0.3) 50%)`;
+            });
+            
+            container.addEventListener('mouseleave', () => {
+                container.style.background = 'rgba(26, 26, 46, 0.3)';
+            });
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Start typing animation after a short delay
+            setTimeout(typeWriter, 1000);
+            
+            // Create particles
+            createParticles();
+            
+            // Add interactivity
+            addInteractivity();
+            
+            // Add a subtle entrance animation to the whole page
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 1s ease-in';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+
+        // Add some performance optimization for particles
+        let ticking = false;
+        function updateParticles() {
+            if (!ticking) {
+                requestAnimationFrame(function() {
+                    // Particle updates would go here if needed
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        // Optional: Add window resize handler for responsiveness
+        window.addEventListener('resize', function() {
+            // Recalculate any size-dependent elements if needed
+        });
+    </script>
+</body>
+</html>
