@@ -30,6 +30,25 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
+        /* Der Menü-Button (am Desktop unsichtbar) */
+        .menu-toggle {
+            display: none; /* Standardmäßig ausblenden */
+            background: none;
+            border: 2px solid #2c3e50;
+            color: #2c3e50;
+            font-size: 16px;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0 auto;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .menu-toggle:hover {
+            background: #e9ecef;
+        }
+
         nav ul {
             display: flex;
             justify-content: center;
@@ -566,7 +585,7 @@
             text-align: left;
         }
 
-        /* Responsive */
+        /* --- RESPONSIVE ANPASSUNGEN (HANDY) --- */
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 28px;
@@ -578,16 +597,6 @@
 
             .chart-container {
                 height: 300px;
-            }
-
-            nav ul {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            nav a {
-                width: 100%;
-                text-align: center;
             }
 
             .fazit-grid {
@@ -602,21 +611,51 @@
             .cta-box {
                 padding: 30px 20px;
             }
+
+            /* Handy-Navigation Anpassung */
+            .menu-toggle {
+                display: block; /* Button sichtbar machen */
+                margin-bottom: 10px;
+            }
+
+            nav ul {
+                display: none; /* Liste standardmäßig verstecken */
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                padding-bottom: 10px;
+            }
+
+            /* Wenn Klasse 'active' da ist, anzeigen */
+            nav ul.active {
+                display: flex;
+            }
+
+            nav a {
+                display: block;
+                width: 200px; /* Breite für besseres Klicken */
+                text-align: center;
+                margin: 2px 0;
+            }
         }
     </style>
 </head>
 <body>
     <nav>
-        <ul>
-            <li><a href="#start">Start</a></li>
-            <li><a href="#statistiken">Statistiken</a></li>
-            <li><a href="#nutzung">Nutzungsverhalten</a></li>
-            <li><a href="#chancen-risiken">Chancen &amp; Risiken</a></li>
-            <li><a href="#bildung">Bildungswesen</a></li>
-            <li><a href="#tools">Tools</a></li>
-            <li><a href="#quiz">Quiz</a></li>
-            <li><a href="#fazit">Fazit</a></li>
-            <li><a href="#glossar">Glossar</a></li>
+        <button class="menu-toggle" onclick="toggleMenu()">
+            ☰ Menü
+        </button>
+        
+        <ul id="nav-menu">
+            <li><a href="#start" onclick="toggleMenu()">Start</a></li>
+            <li><a href="#statistiken" onclick="toggleMenu()">Statistiken</a></li>
+            <li><a href="#nutzung" onclick="toggleMenu()">Nutzungsverhalten</a></li>
+            <li><a href="#chancen-risiken" onclick="toggleMenu()">Chancen &amp; Risiken</a></li>
+            <li><a href="#bildung" onclick="toggleMenu()">Bildungswesen</a></li>
+            <li><a href="#tools" onclick="toggleMenu()">Tools</a></li>
+            <li><a href="#quiz" onclick="toggleMenu()">Quiz</a></li>
+            <li><a href="#fazit" onclick="toggleMenu()">Fazit</a></li>
+            <li><a href="#glossar" onclick="toggleMenu()">Glossar</a></li>
         </ul>
     </nav>
 
@@ -1099,6 +1138,20 @@
     </div>
 
     <script>
+        // --- NEU: Hamburger-Menü Funktion ---
+        function toggleMenu() {
+            const menu = document.getElementById('nav-menu');
+            // Checken ob wir am Handy sind (anhand der Bildschirmbreite)
+            if (window.innerWidth <= 768) {
+                // Klasse 'active' toggeln (an/aus)
+                if (menu.classList.contains('active')) {
+                    menu.classList.remove('active');
+                } else {
+                    menu.classList.add('active');
+                }
+            }
+        }
+
         // Smooth Scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1174,9 +1227,11 @@
         const hoursInput = document.getElementById('hoursPerDay');
         const hoursDisplay = document.getElementById('hoursDisplay');
 
-        hoursInput.addEventListener('input', function() {
-            hoursDisplay.textContent = this.value;
-        });
+        if(hoursInput) {
+            hoursInput.addEventListener('input', function() {
+                hoursDisplay.textContent = this.value;
+            });
+        }
 
         function calculateTime() {
             const hoursPerDay = parseFloat(document.getElementById('hoursPerDay').value);
